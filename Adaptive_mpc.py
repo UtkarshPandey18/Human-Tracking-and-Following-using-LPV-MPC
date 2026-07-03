@@ -6,7 +6,7 @@ max_depth = 10.0
 desired_distance = 0.75
 frame_width = 640
 dia = 0.5
-class AdaptiveMPC:
+class LPVMPC:
     def __init__(self):
         # MPC weights (tune these)
         self.R = np.diag([0.2,  1.0])   # Control effort weights [linear, angular]
