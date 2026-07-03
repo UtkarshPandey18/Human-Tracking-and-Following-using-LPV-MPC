@@ -15,8 +15,8 @@ if torch.cuda.is_available():
 prj_path = '/home/nvidia'
 if prj_path not in sys.path:
     sys.path.append(prj_path)
-from MPC.Adaptive_mpc import AdaptiveMPC
-# from MPC.Adaptive_mpc_torch import TorchAdaptiveMPC
+from MPC.LPV_mpc import LPVMPC
+# from MPC.LPV_mpc_torch import TorchLPVMPC
 
 frame_width = 640
 frame_height = 480
@@ -33,8 +33,8 @@ error_x_prev = 0.0
 max_depth = 10.0
 prev_linear_pub = 0.0
 prev_angular_pub = 0.0
-adaptive_mpc = AdaptiveMPC()
-# torchAdaptiveMPC = TorchAdaptiveMPC(device=device)
+LPV_mpc = LPVMPC()
+# torchLPVMPC = TorchLPVMPC(device=device)
 camera_params = {
             'focalLengthRGB': (-1216.632568359375, 1216.499755859375),
             'focalLengthDepth': (-774.1458740234375, 774.1458740234375),
@@ -158,8 +158,8 @@ class ControlNode:
                     V_human_lat, V_human_axial = get_lat_axial_velocity_dimless(current_pos, person_z)
                     print(f"current_pos: {current_pos}, person_z: {person_z}")
                     print(f"V_human_lat: {V_human_lat}, V_human_axial: {V_human_axial}")
-                    # linear_vel, angular_vel = torchAdaptiveMPC.get_velocity(current_pos, frame_width, person_z, V_human_lat, V_human_axial)
-                    linear_vel, angular_vel = adaptive_mpc.get_velocity(current_pos, frame_width, person_z, V_human_lat, V_human_axial)
+                    # linear_vel, angular_vel = torchLPVMPC.get_velocity(current_pos, frame_width, person_z, V_human_lat, V_human_axial)
+                    linear_vel, angular_vel = LPV_mpc.get_velocity(current_pos, frame_width, person_z, V_human_lat, V_human_axial)
                 
             if person_z_prev - person_z > 2.00:
                 occlusion = not occlusion
